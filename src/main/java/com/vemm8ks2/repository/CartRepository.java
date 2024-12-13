@@ -5,4 +5,5 @@ import com.vemm8ks2.model.Cart;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
+  public Cart findByUserId(Long userId);
 }
