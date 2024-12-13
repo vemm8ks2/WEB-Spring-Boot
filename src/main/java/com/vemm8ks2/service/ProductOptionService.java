@@ -7,7 +7,7 @@ public interface ProductOptionService {
 
   public ProductOptions createProductOption(ProductOptions productOption);
 
-  public ProductOptions updateProductOptionStock(Long productOptionId, int quantity);
+  public ProductOptions updateProductOptionStock(Long productOptionId, int stock);
 
   public ProductOptions getProductOptionById(Long productOptionId);
 
