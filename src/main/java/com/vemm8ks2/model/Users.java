@@ -1,6 +1,11 @@
 package com.vemm8ks2.model;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +19,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Users {
+public class Users implements UserDetails {
+
+  private static final long serialVersionUID = 4982172815429321669L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,6 +65,11 @@ public class Users {
     _admin.setRole(UserRole.ADMIN);
 
     return _admin;
+  }
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role.getValue()));
   }
 
 }
