@@ -16,14 +16,7 @@ public class ProductOptionServiceImpl implements ProductOptionService {
 
   @Override
   public ProductOptions createProductOption(ProductOptions productOption) {
-
-    ProductOptions _productOptions = new ProductOptions();
-
-    _productOptions.setSize(productOption.getSize());
-    _productOptions.setStock(productOption.getStock());
-    _productOptions.setProduct(productOption.getProduct());
-
-    return productOptionRepository.save(_productOptions);
+    return productOptionRepository.save(productOption);
   }
 
   @Override

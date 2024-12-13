@@ -45,4 +45,8 @@ public class Orders {
 
   @OneToMany(mappedBy = "order")
   private List<OrderItems> orderItems = new ArrayList<>();
+
+  public Orders() {
+    this.deliveredAt = LocalDateTime.now();
+  }
 }

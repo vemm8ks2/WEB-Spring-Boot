@@ -15,16 +15,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 
   @Override
   public OrderItems createOrderItem(OrderItems orderItem) {
-
-    OrderItems _orderItems = new OrderItems();
-
-    _orderItems.setQuantity(orderItem.getQuantity());
-    _orderItems.setPrice(orderItem.getPrice());
-    _orderItems.setSize(orderItem.getSize());
-    _orderItems.setOrder(orderItem.getOrder());
-    _orderItems.setProduct(orderItem.getProduct());
-
-    return orderItemRepository.save(_orderItems);
+    return orderItemRepository.save(orderItem);
   }
 
   @Override

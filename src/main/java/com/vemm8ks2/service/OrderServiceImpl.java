@@ -1,6 +1,5 @@
 package com.vemm8ks2.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.vemm8ks2.exception.NotFoundException;
@@ -16,17 +15,7 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public Orders createOrder(Orders order) {
-
-    Orders _orders = new Orders();
-
-    _orders.setShippingAddress(order.getShippingAddress());
-    _orders.setTotalPrice(order.getTotalPrice());
-    _orders.setReceiverName(order.getReceiverName());
-    _orders.setReceiverPhone(order.getReceiverPhone());
-    _orders.setDeliveredAt(LocalDateTime.now());
-    _orders.setPaymentMethod(order.getPaymentMethod());
-
-    return orderRepository.save(_orders);
+    return orderRepository.save(order);
   }
 
   @Override

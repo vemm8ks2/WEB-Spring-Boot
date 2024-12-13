@@ -1,6 +1,5 @@
 package com.vemm8ks2.service;
 
-import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,28 +19,13 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   public Products createProduct(Products product) {
-
-    Products _product = new Products();
-
-    _product.setTitle(product.getTitle());
-    _product.setImageUrl(product.getImageUrl());
-    _product.setPrice(product.getPrice());
-    _product.setCategory(product.getCategory());
-    _product.setProductOptions(product.getProductOptions());
-
-    return _product;
+    return productRepository.save(product);
   }
 
   @Override
   public Products getProductById(Long productId) {
-
-    Optional<Products> optional = productRepository.findById(productId);
-
-    if (optional.isEmpty()) {
-      throw new NotFoundException("상품이 존재하지 않습니다.");
-    }
-
-    return optional.get();
+    return productRepository.findById(productId)
+        .orElseThrow(() -> new NotFoundException("상품이 존재하지 않습니다."));
   }
 
   @Override
