@@ -1,6 +1,5 @@
 package com.vemm8ks2.service;
 
-import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
@@ -17,14 +16,12 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-  private SecretKey secretKey;
-  private String encodedSecretKey;
+  private String secretKey;
 
   public JwtServiceImpl() {
     try {
       KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
-      secretKey = keyGenerator.generateKey();
-      encodedSecretKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+      secretKey = Base64.getEncoder().encodeToString(keyGenerator.generateKey().getEncoded());
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -33,15 +30,15 @@ public class JwtServiceImpl implements JwtService {
   public String generateToken(UserDetails userDetails) {
     return Jwts.builder().subject(userDetails.getUsername())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() * 1000 * 60 * 60 * 24)).signWith(getSignKey())
-        .compact();
+        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+        .signWith(getSignKey()).compact();
   }
 
-  public String generateRefreshToken(Map<String, Object> extraClaims,UserDetails userDetails) {
+  public String generateRefreshToken(Map<String, Object> extraClaims, UserDetails userDetails) {
     return Jwts.builder().subject(userDetails.getUsername())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() * 1000 * 60 * 60 * 24 * 7)).signWith(getSignKey())
-        .compact();
+        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
+        .signWith(getSignKey()).compact();
   }
 
   public String extractUsername(String token) {
@@ -53,13 +50,13 @@ public class JwtServiceImpl implements JwtService {
     return claimsResolvers.apply(claims);
   }
 
-  private Key getSignKey() {
-    byte[] key = Decoders.BASE64.decode(encodedSecretKey);
+  private SecretKey getSignKey() {
+    byte[] key = Decoders.BASE64.decode(secretKey);
     return Keys.hmacShaKeyFor(key);
   }
 
   private Claims extractAllClaims(String token) {
-    return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
+    return Jwts.parser().verifyWith(getSignKey()).build().parseSignedClaims(token).getPayload();
   }
 
   public boolean isValidToken(String token, UserDetails userDetails) {

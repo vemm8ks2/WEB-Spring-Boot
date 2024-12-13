@@ -6,6 +6,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.vemm8ks2.dto.JwtAuthSuccess;
+import com.vemm8ks2.dto.RefreshTokenRequest;
 import com.vemm8ks2.model.UserRole;
 import com.vemm8ks2.model.Users;
 import com.vemm8ks2.repository.UserRepository;
@@ -50,5 +51,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     response.setUser(_user);
 
     return response;
+  }
+  
+  public JwtAuthSuccess refreshToken(RefreshTokenRequest refreshTokenRequest) {
+    String username = jwtService.extractUsername(refreshTokenRequest.getToken());
+    Users user = userRepository.findByUsername(username).orElseThrow();
+    
+    if (jwtService.isValidToken(refreshTokenRequest.getToken(), user)) {
+      String token = jwtService.generateToken(user);
+
+      JwtAuthSuccess response = new JwtAuthSuccess();
+
+      response.setToken(token);
+      response.setRefreshToken(refreshTokenRequest.getToken());
+      response.setUser(user);
+
+      return response;
+    }
+    
+    return null;
   }
 }

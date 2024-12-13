@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.vemm8ks2.dto.JwtAuthSuccess;
+import com.vemm8ks2.dto.RefreshTokenRequest;
 import com.vemm8ks2.model.Users;
 import com.vemm8ks2.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -26,4 +27,11 @@ public class AuthenticationController {
   public ResponseEntity<JwtAuthSuccess> signin(@RequestBody Users user) {
     return ResponseEntity.ok(authenticationService.signin(user));
   }
+
+  @PostMapping("/refresh")
+  public ResponseEntity<JwtAuthSuccess> refresh(
+      @RequestBody RefreshTokenRequest refreshTokenRequest) {
+    return ResponseEntity.ok(authenticationService.refreshToken(refreshTokenRequest));
+  }
+
 }
