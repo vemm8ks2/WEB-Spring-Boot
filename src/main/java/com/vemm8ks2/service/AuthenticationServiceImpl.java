@@ -1,7 +1,11 @@
 package com.vemm8ks2.service;
 
+import java.util.HashMap;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.vemm8ks2.dto.JwtAuthSuccess;
 import com.vemm8ks2.model.UserRole;
 import com.vemm8ks2.model.Users;
 import com.vemm8ks2.repository.UserRepository;
@@ -13,6 +17,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final AuthenticationManager authenticationManager;
+  private final JwtService jwtService;
 
   public Users signup(Users user) {
 
@@ -25,5 +31,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     _user.setRole(UserRole.USER);
 
     return userRepository.save(_user);
+  }
+
+  public JwtAuthSuccess signin(Users user) {
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+
+    Users _user = userRepository.findByUsername(user.getUsername())
+        .orElseThrow(() -> new IllegalArgumentException("아이디 혹은 비밀번호가 일치하지 않습니다."));
+
+    String token = jwtService.generateToken(_user);
+    String refreshToken = jwtService.generateRefreshToken(new HashMap<>(), _user);
+
+    JwtAuthSuccess response = new JwtAuthSuccess();
+
+    response.setToken(token);
+    response.setRefreshToken(refreshToken);
+    response.setUser(_user);
+
+    return response;
   }
 }

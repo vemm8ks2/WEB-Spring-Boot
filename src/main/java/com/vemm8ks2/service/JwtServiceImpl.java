@@ -3,6 +3,7 @@ package com.vemm8ks2.service;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 import java.util.function.Function;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -32,7 +33,14 @@ public class JwtServiceImpl implements JwtService {
   public String generateToken(UserDetails userDetails) {
     return Jwts.builder().subject(userDetails.getUsername())
         .issuedAt(new Date(System.currentTimeMillis()))
-        .expiration(new Date(System.currentTimeMillis() * 1000 * 60 * 24)).signWith(getSignKey())
+        .expiration(new Date(System.currentTimeMillis() * 1000 * 60 * 60 * 24)).signWith(getSignKey())
+        .compact();
+  }
+
+  public String generateRefreshToken(Map<String, Object> extraClaims,UserDetails userDetails) {
+    return Jwts.builder().subject(userDetails.getUsername())
+        .issuedAt(new Date(System.currentTimeMillis()))
+        .expiration(new Date(System.currentTimeMillis() * 1000 * 60 * 60 * 24 * 7)).signWith(getSignKey())
         .compact();
   }
 

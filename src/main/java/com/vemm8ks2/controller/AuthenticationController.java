@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.vemm8ks2.dto.JwtAuthSuccess;
 import com.vemm8ks2.model.Users;
 import com.vemm8ks2.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,10 @@ public class AuthenticationController {
   @PostMapping("/signup")
   public ResponseEntity<Users> signup(@RequestBody Users user) {
     return ResponseEntity.ok(authenticationService.signup(user));
+  }
+
+  @PostMapping("/signin")
+  public ResponseEntity<JwtAuthSuccess> signin(@RequestBody Users user) {
+    return ResponseEntity.ok(authenticationService.signin(user));
   }
 }
