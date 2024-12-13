@@ -1,6 +1,5 @@
 package com.vemm8ks2.service;
 
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 import com.vemm8ks2.exception.NotFoundException;
 import com.vemm8ks2.model.Users;
@@ -25,14 +24,8 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public Users getUserById(Long userId) {
-
-    Optional<Users> optional = userRepository.findById(userId);
-
-    if (optional.isEmpty()) {
-      throw new NotFoundException("유저가 존재하지 않습니다.");
-    }
-
-    return optional.get();
+    return userRepository.findById(userId)
+        .orElseThrow(() -> new NotFoundException("유저가 존재하지 않습니다."));
   }
 
 }
