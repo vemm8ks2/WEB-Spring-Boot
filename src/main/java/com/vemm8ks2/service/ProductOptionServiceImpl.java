@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ProductOptionImpl implements ProductOptionService {
+public class ProductOptionServiceImpl implements ProductOptionService {
 
   private final ProductOptionRepository productOptionRepository;
 
