@@ -1,6 +1,7 @@
 package com.vemm8ks2.service;
 
 import java.util.List;
+import com.vemm8ks2.model.Cart;
 import com.vemm8ks2.model.CartItems;
 
 public interface CartItemSerive {
@@ -9,9 +10,9 @@ public interface CartItemSerive {
 
   public CartItems updateCartItemQuantity(Long cartItemId, int quantity);
 
-  public String addCartItem(Long cartId, CartItems cart);
+  public Cart addCartItem(Long cartId, CartItems cartItem);
 
-  public void removeCartItem(Long cartId, Long cartItemId);
+  public Cart removeCartItem(Long cartId, CartItems cartItem);
 
   public List<CartItems> getCartItemsByCartId(Long cartId);
 }
