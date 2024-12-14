@@ -1,2 +1,7 @@
+--- 기본 베이스 설정
 https://www.youtube.com/playlist?list=PLgYFT7gUQL8HCIyTncupOEl8c6cgXAO4j
 https://www.youtube.com/watch?v=oeni_9g7too
+
+--- cors 설정
+https://velog.io/@juhyeon1114/Spring-security%EC%97%90%EC%84%9C-CORS%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
+https://ddonghyeo.tistory.com/56

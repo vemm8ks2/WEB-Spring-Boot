@@ -7,7 +7,9 @@ public interface CategoryService {
 
   public Category createCategory(Category category);
 
-  public Category getCategoryById(Long categoryId);
+  public Category getCategoryById(String categoryId);
 
-  public List<Category> getCategoriesByParentCategory(Long parentCategoryId);
+  public List<Category> getCategoriesByParentCategory(Category parentCategory);
+
+  public List<Category> getAllCategories();
 }

@@ -26,14 +26,19 @@ public class CategoryServiceImpl implements CategoryService {
   }
 
   @Override
-  public Category getCategoryById(Long categoryId) {
+  public Category getCategoryById(String categoryId) {
     return categoryRepository.findById(categoryId)
         .orElseThrow(() -> new NotFoundException("카테고리가 존재하지 않습니다."));
   }
 
   @Override
-  public List<Category> getCategoriesByParentCategory(Long parentCategoryId) {
-    return categoryRepository.findByParentCategoryId(parentCategoryId);
+  public List<Category> getCategoriesByParentCategory(Category parentCategory) {
+    return categoryRepository.findByParentCategory(parentCategory);
+  }
+
+  @Override
+  public List<Category> getAllCategories() {
+    return categoryRepository.findAll();
   }
 
 }
