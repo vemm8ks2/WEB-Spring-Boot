@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.vemm8ks2.dto.JwtAuthSuccess;
 import com.vemm8ks2.dto.RefreshTokenRequest;
 import com.vemm8ks2.model.UserRole;
@@ -17,10 +18,12 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
   private final UserRepository userRepository;
+  private final CartService cartService;
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
 
+  @Transactional
   public Users signup(Users user) {
 
     Users _user = new Users();
@@ -31,6 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     _user.setBirthDate(user.getBirthDate());
     _user.setRole(UserRole.USER);
 
+    cartService.createCart(_user);
     return userRepository.save(_user);
   }
 
@@ -52,11 +56,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     return response;
   }
-  
+
   public JwtAuthSuccess refreshToken(RefreshTokenRequest refreshTokenRequest) {
     String username = jwtService.extractUsername(refreshTokenRequest.getToken());
     Users user = userRepository.findByUsername(username).orElseThrow();
-    
+
     if (jwtService.isValidToken(refreshTokenRequest.getToken(), user)) {
       String token = jwtService.generateToken(user);
 
@@ -68,7 +72,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
       return response;
     }
-    
+
     return null;
   }
 }

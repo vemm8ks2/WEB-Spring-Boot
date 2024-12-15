@@ -36,4 +36,10 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(() -> new UsernameNotFoundException("유저가 존재하지 않습니다."));
   }
 
+  @Override
+  public Users getUserByUsername(String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(() -> new UsernameNotFoundException("유저가 존재하지 않습니다."));
+  }
+
 }

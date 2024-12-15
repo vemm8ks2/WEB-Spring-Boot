@@ -50,9 +50,10 @@ public class CartItemServiceImpl implements CartItemSerive {
         cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("카트가 존재하지 않습니다."));
 
     cartItem.setCart(cart);
-    cart.getCartItems().add(cartItem);
 
-    cartItemRepository.save(cartItem);
+    CartItems _cartItem = cartItemRepository.save(cartItem);
+
+    cart.getCartItems().add(_cartItem);
     return cartRepository.save(cart);
   }
 
