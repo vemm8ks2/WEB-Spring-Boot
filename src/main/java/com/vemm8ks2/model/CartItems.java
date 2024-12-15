@@ -1,5 +1,6 @@
 package com.vemm8ks2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,16 +24,12 @@ public class CartItems {
   @Min(value = 0)
   @Column(nullable = false)
   private int quantity;
-
-  @Min(value = 0)
+  
   @Column(nullable = false)
-  private double price;
-
-  @Min(value = 0)
-  @Column(nullable = false)
-  private double totalPrice;
+  private String size;
 
   @ManyToOne
+  @JsonIgnore
   private Cart cart;
   
   @ManyToOne

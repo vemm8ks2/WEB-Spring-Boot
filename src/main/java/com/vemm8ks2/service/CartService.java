@@ -8,5 +8,6 @@ public interface CartService {
   public Cart createCart(Users user);
 
   public Cart getCartByUser(Long userId);
+
 }
 

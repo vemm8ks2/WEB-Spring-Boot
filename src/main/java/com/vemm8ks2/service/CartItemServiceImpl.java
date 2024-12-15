@@ -23,8 +23,6 @@ public class CartItemServiceImpl implements CartItemSerive {
     CartItems _cartItem = new CartItems();
 
     _cartItem.setQuantity(cartItem.getQuantity());
-    _cartItem.setPrice(cartItem.getPrice());
-    _cartItem.setTotalPrice(cartItem.getQuantity() * cartItem.getPrice());
     _cartItem.setCart(cartItem.getCart());
     _cartItem.setProduct(cartItem.getProduct());
 

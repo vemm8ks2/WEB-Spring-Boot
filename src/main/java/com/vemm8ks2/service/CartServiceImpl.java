@@ -17,7 +17,6 @@ public class CartServiceImpl implements CartService {
 
     Cart _cart = new Cart();
 
-    _cart.setTotalPrice(0);
     _cart.setUser(user);
 
     return cartRepository.save(_cart);
@@ -27,4 +26,5 @@ public class CartServiceImpl implements CartService {
   public Cart getCartByUser(Long userId) {
     return cartRepository.findByUserId(userId);
   }
+
 }
