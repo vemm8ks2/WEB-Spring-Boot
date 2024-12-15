@@ -44,17 +44,22 @@ public class CartItemServiceImpl implements CartItemSerive {
   @Override
   @Transactional
   public CartItems addCartItem(Cart cart, CartItems cartItem) {
+    System.out.println("|| --- cartItem.getId() : " + cartItem.getId());
+    
+    if (cartItem.getId() == null) {
+      CartItems _cartItem = new CartItems();
 
-    CartItems _cartItem = new CartItems();
+      _cartItem.setQuantity(cartItem.getQuantity());
+      _cartItem.setSize(cartItem.getSize());
+      _cartItem.setProduct(cartItem.getProduct());
+      _cartItem.setCart(cart);
 
-    _cartItem.setQuantity(cartItem.getQuantity());
-    _cartItem.setSize(cartItem.getSize());
-    _cartItem.setProduct(cartItem.getProduct());
-    _cartItem.setCart(cart);
+      cartItemRepository.save(_cartItem);
 
-    cartItemRepository.save(_cartItem);
-
-    return _cartItem;
+      return _cartItem;
+    } else {
+      return updateCartItemQuantity(cartItem.getId(), cartItem.getQuantity());
+    }
   }
 
   @Override
