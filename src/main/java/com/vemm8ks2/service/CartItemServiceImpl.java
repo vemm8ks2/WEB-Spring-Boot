@@ -1,5 +1,6 @@
 package com.vemm8ks2.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class CartItemServiceImpl implements CartItemSerive {
     CartItems _cartItem = new CartItems();
 
     _cartItem.setQuantity(cartItem.getQuantity());
+    _cartItem.setSize(cartItem.getSize());
     _cartItem.setCart(cartItem.getCart());
     _cartItem.setProduct(cartItem.getProduct());
 
@@ -42,10 +44,11 @@ public class CartItemServiceImpl implements CartItemSerive {
 
   @Override
   @Transactional
-  public Cart addCartItem(Long cartId, CartItems cartItem) {
-
-    Cart cart =
-        cartRepository.findById(cartId).orElseThrow(() -> new NotFoundException("카트가 존재하지 않습니다."));
+  public Cart addCartItem(Cart cart, CartItems cartItem) {
+    
+    /**
+     * TODO: 카트는 모델부터 설계를 다시 하는 것을 권장한다.
+     */
 
     cartItem.setCart(cart);
 
@@ -53,6 +56,7 @@ public class CartItemServiceImpl implements CartItemSerive {
 
     cart.getCartItems().add(_cartItem);
     return cartRepository.save(cart);
+
   }
 
   @Override
@@ -75,6 +79,12 @@ public class CartItemServiceImpl implements CartItemSerive {
   @Override
   public List<CartItems> getCartItemsByCartId(Long cartId) {
     return cartItemRepository.findByCartId(cartId);
+  }
+
+  @Override
+  public CartItems getCartItemByCartItemId(Long cartItemId) {
+    return cartItemRepository.findById(cartItemId)
+        .orElseThrow(() -> new NotFoundException("카트 아이템이 존재하지 않습니다."));
   }
 
 }
