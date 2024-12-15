@@ -10,11 +10,11 @@ public interface CartItemSerive {
 
   public CartItems updateCartItemQuantity(Long cartItemId, int quantity);
   
-  public Cart addCartItem(Cart cart, CartItems cartItem);
+  public CartItems addCartItem(Cart cart, CartItems cartItem);
 
   public Cart removeCartItem(Long cartId, CartItems cartItem);
 
   public List<CartItems> getCartItemsByCartId(Long cartId);
   
-  public CartItems getCartItemByCartItemId(Long cartItemId);
+  public CartItems getCartItemById(Long cartItemId);
 }

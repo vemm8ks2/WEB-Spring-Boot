@@ -43,19 +43,18 @@ public class CartItemServiceImpl implements CartItemSerive {
 
   @Override
   @Transactional
-  public Cart addCartItem(Cart cart, CartItems cartItem) {
-    
-    /**
-     * TODO: 카트는 모델부터 설계를 다시 하는 것을 권장한다.
-     */
+  public CartItems addCartItem(Cart cart, CartItems cartItem) {
 
-    cartItem.setCart(cart);
+    CartItems _cartItem = new CartItems();
 
-    CartItems _cartItem = cartItemRepository.save(cartItem);
+    _cartItem.setQuantity(cartItem.getQuantity());
+    _cartItem.setSize(cartItem.getSize());
+    _cartItem.setProduct(cartItem.getProduct());
+    _cartItem.setCart(cart);
 
-    cart.getCartItems().add(_cartItem);
-    return cartRepository.save(cart);
+    cartItemRepository.save(_cartItem);
 
+    return _cartItem;
   }
 
   @Override
@@ -81,7 +80,7 @@ public class CartItemServiceImpl implements CartItemSerive {
   }
 
   @Override
-  public CartItems getCartItemByCartItemId(Long cartItemId) {
+  public CartItems getCartItemById(Long cartItemId) {
     return cartItemRepository.findById(cartItemId)
         .orElseThrow(() -> new NotFoundException("카트 아이템이 존재하지 않습니다."));
   }

@@ -18,6 +18,7 @@ import com.vemm8ks2.model.Users;
 import com.vemm8ks2.service.CartItemSerive;
 import com.vemm8ks2.service.CartService;
 import com.vemm8ks2.service.JwtService;
+import com.vemm8ks2.service.ProductService;
 import com.vemm8ks2.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -29,10 +30,11 @@ public class CartItemController {
   private final UserService userService;
   private final CartService cartService;
   private final CartItemSerive cartItemSerive;
+  private final ProductService productService;
   private final JwtService jwtService;
 
   @PutMapping
-  public ResponseEntity<Cart> addCartItem(@RequestHeader("Authorization") String jwt,
+  public ResponseEntity<CartItems> addCartItem(@RequestHeader("Authorization") String jwt,
       @RequestBody CartItems cartItem) {
 
     String username = jwtService.extractUsername(jwt.substring(7));
@@ -40,9 +42,10 @@ public class CartItemController {
     Users user = userService.getUserByUsername(username);
     Cart cart = cartService.getCartByUser(user.getId());
 
-    Cart _cart = cartItemSerive.addCartItem(cart, cartItem);
+    CartItems _cartItem = cartItemSerive.addCartItem(cart, cartItem);
+    _cartItem.setProduct(productService.getProductById(_cartItem.getProduct().getId()));
 
-    return ResponseEntity.ok(_cart);
+    return ResponseEntity.ok(_cartItem);
   }
 
   @DeleteMapping("/delete/{cart-item-id}")
@@ -53,7 +56,7 @@ public class CartItemController {
 
     Users user = userService.getUserByUsername(username);
     Cart cart = cartService.getCartByUser(user.getId());
-    CartItems cartItem = cartItemSerive.getCartItemByCartItemId(cartItemId);
+    CartItems cartItem = cartItemSerive.getCartItemById(cartItemId);
 
     if (cart.getUser().getUsername().equals(username)) {
       cartItemSerive.removeCartItem(cart.getId(), cartItem);
