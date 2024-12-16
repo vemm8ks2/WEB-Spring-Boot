@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import com.vemm8ks2.exception.NotFoundException;
 import com.vemm8ks2.model.Orders;
+import com.vemm8ks2.model.Users;
 import com.vemm8ks2.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +15,8 @@ public class OrderServiceImpl implements OrderService {
   private final OrderRepository orderRepository;
 
   @Override
-  public Orders createOrder(Orders order) {
+  public Orders createOrder(Orders order, Users user) {
+    order.setUser(user);
     return orderRepository.save(order);
   }
 

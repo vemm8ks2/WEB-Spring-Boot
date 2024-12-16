@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -34,7 +35,7 @@ public class OrderController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<SuccessResponse> saveOrder(@RequestHeader("Authorization") String jwt,
+  public ResponseEntity<SuccessResponse<?>> saveOrder(@RequestHeader("Authorization") String jwt,
       @RequestBody Orders order) {
 
     String username = jwtService.extractUsername(jwt.substring(7));
@@ -44,12 +45,26 @@ public class OrderController {
 
     List<CartItems> cartItems = cart.getCartItems();
 
-    Orders _order = orderService.createOrder(order);
+    Orders _order = orderService.createOrder(order, user);
 
     orderItemService.createAllOrderItemByCartItemAndOrder(cartItems, _order);
 
-    SuccessResponse response = new SuccessResponse("주문이 완료되었습니다.");
+    SuccessResponse<?> response = new SuccessResponse<>("주문이 완료되었습니다.");
 
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
+
+  @GetMapping("/history")
+  public ResponseEntity<SuccessResponse<List<Orders>>> getOrderHistory(
+      @RequestHeader("Authorization") String jwt) {
+
+    String username = jwtService.extractUsername(jwt.substring(7));
+
+    Users user = userService.getUserByUsername(username);
+    List<Orders> orders = orderService.getOrdersByUser(user.getId());
+
+    SuccessResponse<List<Orders>> response = new SuccessResponse<>("주문 내역을 성공적으로 불러왔습니다.", orders);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 }

@@ -1,5 +1,6 @@
 package com.vemm8ks2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +32,7 @@ public class OrderItems {
   private String size;
 
   @ManyToOne
+  @JsonIgnore
   private Orders order;
 
   @ManyToOne

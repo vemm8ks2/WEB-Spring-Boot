@@ -7,7 +7,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SuccessResponse {
+public class SuccessResponse<T> {
 
   private String message;
+  private T data;
+
+  public SuccessResponse(String message) {
+    this.message = message;
+    this.data = null;
+  }
+
 }
