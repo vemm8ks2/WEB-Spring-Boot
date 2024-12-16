@@ -45,7 +45,7 @@ public class CartItemServiceImpl implements CartItemSerive {
   @Transactional
   public CartItems addCartItem(Cart cart, CartItems cartItem) {
     System.out.println("|| --- cartItem.getId() : " + cartItem.getId());
-    
+
     if (cartItem.getId() == null) {
       CartItems _cartItem = new CartItems();
 
@@ -77,6 +77,12 @@ public class CartItemServiceImpl implements CartItemSerive {
 
     cartItemRepository.delete(cartItem);
     return cartRepository.save(cart);
+  }
+
+  @Override
+  public boolean removeAllCartItem(List<CartItems> cartItems) {
+    cartItemRepository.deleteAll(cartItems);
+    return true;
   }
 
   @Override

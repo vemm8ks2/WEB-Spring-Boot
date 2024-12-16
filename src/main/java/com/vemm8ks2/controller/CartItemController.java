@@ -1,5 +1,6 @@
 package com.vemm8ks2.controller;
 
+import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,24 @@ public class CartItemController {
 
     if (cart.getUser().getUsername().equals(username)) {
       cartItemSerive.removeCartItem(cart.getId(), cartItem);
+      return ResponseEntity.ok(cart);
+    }
+
+    return ResponseEntity.ofNullable(null);
+  }
+
+  @DeleteMapping("/delete/all")
+  public ResponseEntity<Cart> deleteCartItem(@RequestHeader("Authorization") String jwt) {
+
+    String username = jwtService.extractUsername(jwt.substring(7));
+
+    Users user = userService.getUserByUsername(username);
+    Cart cart = cartService.getCartByUser(user.getId());
+
+    if (cart.getUser().getUsername().equals(username)) {
+      cartItemSerive.removeAllCartItem(cart.getCartItems());
+
+      cart.setCartItems(new ArrayList<>());
       return ResponseEntity.ok(cart);
     }
 

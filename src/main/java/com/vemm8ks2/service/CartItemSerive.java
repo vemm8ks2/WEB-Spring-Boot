@@ -11,8 +11,10 @@ public interface CartItemSerive {
   public CartItems updateCartItemQuantity(Long cartItemId, int quantity);
   
   public CartItems addCartItem(Cart cart, CartItems cartItem);
-
+  
   public Cart removeCartItem(Long cartId, CartItems cartItem);
+  
+  public boolean removeAllCartItem(List<CartItems> cartItems);
 
   public List<CartItems> getCartItemsByCartId(Long cartId);
   
