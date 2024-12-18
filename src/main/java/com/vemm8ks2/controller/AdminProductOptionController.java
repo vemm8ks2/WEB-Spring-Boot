@@ -18,6 +18,6 @@ public class AdminProductOptionController {
 
   @PostMapping
   public ProductOptions createProductOption(@RequestBody _ProductOptionDTO productOptionDTO) {
-    return productOptionService.createProductOption(productOptionDTO);
+    return productOptionService.createProductOptionByDTO(productOptionDTO);
   }
 }

@@ -8,6 +8,7 @@ import com.vemm8ks2.exception.NotFoundException;
 import com.vemm8ks2.model.ProductOptions;
 import com.vemm8ks2.model.Products;
 import com.vemm8ks2.repository.ProductOptionRepository;
+import com.vemm8ks2.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,20 +18,26 @@ import lombok.extern.slf4j.Slf4j;
 public class ProductOptionServiceImpl implements ProductOptionService {
 
   private final ProductOptionRepository productOptionRepository;
+  private final ProductRepository productRepository;
 
   @Override
-  public ProductOptions createProductOption(_ProductOptionDTO productOptionDTO) {
-
-    Products product = new Products();
-    product.setId(productOptionDTO.getProductId());
-
-    ProductOptions productOption = new ProductOptions();
-
-    productOption.setSize(productOptionDTO.getSize());
-    productOption.setStock(productOptionDTO.getStock());
-    productOption.setProduct(product);
-
+  public ProductOptions createProductOption(ProductOptions productOption) {
     return productOptionRepository.save(productOption);
+  }
+
+  @Override
+  public ProductOptions createProductOptionByDTO(_ProductOptionDTO productOptionDTO) {
+
+    Products product = productRepository.findById(productOptionDTO.getProductId())
+        .orElseThrow(() -> new NotFoundException("상품이 존재하지 않습니다."));
+
+    ProductOptions _productOption = new ProductOptions();
+
+    _productOption.setSize(productOptionDTO.getSize());
+    _productOption.setStock(productOptionDTO.getStock());
+    _productOption.setProduct(product);
+
+    return productOptionRepository.save(_productOption);
   }
 
   @Override

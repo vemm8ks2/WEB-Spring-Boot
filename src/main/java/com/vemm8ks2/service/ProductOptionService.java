@@ -6,7 +6,9 @@ import com.vemm8ks2.model.ProductOptions;
 
 public interface ProductOptionService {
 
-  public ProductOptions createProductOption(_ProductOptionDTO productOption);
+  public ProductOptions createProductOption(ProductOptions productOption);
+
+  public ProductOptions createProductOptionByDTO(_ProductOptionDTO productOptionDTO);
 
   public ProductOptions updateProductOptionStock(Long productOptionId, int stock);
 

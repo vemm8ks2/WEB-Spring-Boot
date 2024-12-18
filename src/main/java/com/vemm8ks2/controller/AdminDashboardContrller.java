@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.vemm8ks2.dto.RequsetBetweenDate;
 import com.vemm8ks2.dto.SuccessResponse;
+import com.vemm8ks2.dto.request._BetweenDateDTO;
 import com.vemm8ks2.model.Orders;
 import com.vemm8ks2.service.AdminDashboardService;
 import lombok.RequiredArgsConstructor;
@@ -123,7 +123,7 @@ public class AdminDashboardContrller {
 
   @GetMapping("/order-amount-by-month")
   public ResponseEntity<SuccessResponse<Object[]>> getMonthlyOrderAmount(
-      @RequestBody RequsetBetweenDate date) {
+      @RequestBody _BetweenDateDTO date) {
 
     LocalDateTime startDate = date.getStartDate();
     LocalDateTime endDate = date.getEndDate();

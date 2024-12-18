@@ -6,10 +6,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class _ProductDTO {
-  
+
   private String imageUrl;
   private String title;
   private double price;
   private String categoryId;
-  
+  private _ProductOptionDTO[] optionList;
+
 }
