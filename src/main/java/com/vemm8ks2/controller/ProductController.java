@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.vemm8ks2.model.Products;
-import com.vemm8ks2.repository.ProductRepository;
+import com.vemm8ks2.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductController {
 
-  private final ProductRepository productRepository;
+  private final ProductService productService;
 
   @GetMapping
   public ResponseEntity<List<Products>> getProducts() {
-    List<Products> productList = productRepository.findAll();
+    List<Products> productList = productService.getAllProducts();
     return ResponseEntity.ok(productList);
   }
 }

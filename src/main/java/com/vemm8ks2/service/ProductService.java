@@ -1,11 +1,15 @@
 package com.vemm8ks2.service;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
+import com.vemm8ks2.dto.request._ProductDTO;
 import com.vemm8ks2.model.Products;
 
 public interface ProductService {
 
-  public Products createProduct(Products product);
+  public Products createProduct(_ProductDTO productDTO);
+  
+  public List<Products> getAllProducts();
 
   public Products getProductById(Long productId);
 

@@ -9,6 +9,8 @@ public interface OrderService {
   public Orders createOrder(Orders order, Users user);
 
   public Orders getOrderById(Long orderId);
+  
+  public List<Orders> getAllOrders();
 
   public List<Orders> getOrdersByUser(Long userId);
 }

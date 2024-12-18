@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vemm8ks2.dto.RequsetBetweenDate;
 import com.vemm8ks2.dto.SuccessResponse;
 import com.vemm8ks2.model.Orders;
-import com.vemm8ks2.repository.OrderRepository;
-import com.vemm8ks2.repository.UserRepository;
+import com.vemm8ks2.service.AdminDashboardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,8 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminDashboardContrller {
 
-  private final OrderRepository orderRepository;
-  private final UserRepository userRepository;
+  private final AdminDashboardService adminDashboardService;
 
   @GetMapping("/total-price-of-this-month")
   public ResponseEntity<SuccessResponse<Double>> getTotalPriceOfThisMonth() {
@@ -33,7 +31,7 @@ public class AdminDashboardContrller {
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
 
-    Double totalPrice = orderRepository.findTotalPriceForDate(startOfMonth.atTime(0, 0),
+    Double totalPrice = adminDashboardService.getTotalPriceBetweenDate(startOfMonth.atTime(0, 0),
         today.atTime(LocalTime.now()));
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 구매금액입니다.";
@@ -50,8 +48,8 @@ public class AdminDashboardContrller {
     LocalDate lastMonth = today.minusMonths(1);
     LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
 
-    Double totalPrice = orderRepository.findTotalPriceForDate(firstDayOfLastMonth.atTime(0, 0),
-        lastMonth.atTime(LocalTime.now()));
+    Double totalPrice = adminDashboardService.getTotalPriceBetweenDate(
+        firstDayOfLastMonth.atTime(0, 0), lastMonth.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 구매금액입니다.";
     SuccessResponse<Double> response = new SuccessResponse<>(msg, totalPrice);
@@ -65,7 +63,7 @@ public class AdminDashboardContrller {
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
 
-    Number users = userRepository.getSignupUsersForDate(startOfMonth.atTime(0, 0),
+    Number users = adminDashboardService.getSignupUsersBetweenDate(startOfMonth.atTime(0, 0),
         today.atTime(LocalTime.now()));
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 회원가입자 수 입니다.";
@@ -82,7 +80,7 @@ public class AdminDashboardContrller {
     LocalDate lastMonth = today.minusMonths(1);
     LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
 
-    Number users = userRepository.getSignupUsersForDate(firstDayOfLastMonth.atTime(0, 0),
+    Number users = adminDashboardService.getSignupUsersBetweenDate(firstDayOfLastMonth.atTime(0, 0),
         lastMonth.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 회원가입자 수 입니다.";
@@ -97,7 +95,7 @@ public class AdminDashboardContrller {
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
 
-    Number orders = orderRepository.countByDeliveredAtBetween(startOfMonth.atTime(0, 0),
+    Number orders = adminDashboardService.getOrdersBetweenDate(startOfMonth.atTime(0, 0),
         today.atTime(LocalTime.now()));
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 주문 수 입니다.";
@@ -114,7 +112,7 @@ public class AdminDashboardContrller {
     LocalDate lastMonth = today.minusMonths(1);
     LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
 
-    Number orders = orderRepository.countByDeliveredAtBetween(firstDayOfLastMonth.atTime(0, 0),
+    Number orders = adminDashboardService.getOrdersBetweenDate(firstDayOfLastMonth.atTime(0, 0),
         lastMonth.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 주문 수 입니다.";
@@ -124,13 +122,13 @@ public class AdminDashboardContrller {
   }
 
   @GetMapping("/order-amount-by-month")
-  public ResponseEntity<SuccessResponse<Object[]>> getMonthlyOrderAmoun(
+  public ResponseEntity<SuccessResponse<Object[]>> getMonthlyOrderAmount(
       @RequestBody RequsetBetweenDate date) {
 
     LocalDateTime startDate = date.getStartDate();
     LocalDateTime endDate = date.getEndDate();
 
-    Object[] orderAmount = orderRepository.getMonthlyOrderAmount(startDate, endDate);
+    Object[] orderAmount = adminDashboardService.getMonthlyOrderAmount(startDate, endDate);
 
     String msg = startDate.toLocalDate() + " 부터 " + endDate.toLocalDate() + " 까지 월별 총 주문 합계 입니다.";
     SuccessResponse<Object[]> response = new SuccessResponse<>(msg, orderAmount);
@@ -141,7 +139,7 @@ public class AdminDashboardContrller {
   @GetMapping("/top5-recent-orders")
   public ResponseEntity<SuccessResponse<List<Orders>>> getTop5RecentOrders() {
 
-    List<Orders> orders = orderRepository.findTop5ByOrderByDeliveredAtDesc();
+    List<Orders> orders = adminDashboardService.getTop5RecentOrders();
 
     SuccessResponse<List<Orders>> response = new SuccessResponse<>("최근 주문 목록 5개입니다.", orders);
 

@@ -1,11 +1,14 @@
 package com.vemm8ks2.service;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import com.vemm8ks2.dto.request._ProductDTO;
 import com.vemm8ks2.exception.NotFoundException;
+import com.vemm8ks2.model.Category;
 import com.vemm8ks2.model.Products;
 import com.vemm8ks2.repository.ProductRepository;
 import com.vemm8ks2.repository.ProductSpec;
@@ -18,8 +21,24 @@ public class ProductServiceImpl implements ProductService {
   private final ProductRepository productRepository;
 
   @Override
-  public Products createProduct(Products product) {
+  public Products createProduct(_ProductDTO productDTO) {
+
+    Category category = new Category();
+    category.setId(productDTO.getCategoryId());
+
+    Products product = new Products();
+
+    product.setTitle(productDTO.getTitle());
+    product.setPrice(productDTO.getPrice());
+    product.setImageUrl(productDTO.getImageUrl());
+    product.setCategory(category);
+
     return productRepository.save(product);
+  }
+
+  @Override
+  public List<Products> getAllProducts() {
+    return productRepository.findAll();
   }
 
   @Override

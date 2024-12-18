@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.vemm8ks2.dto.request._ProductDTO;
 import com.vemm8ks2.model.Products;
-import com.vemm8ks2.repository.ProductRepository;
+import com.vemm8ks2.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -15,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminProductController {
 
-  private final ProductRepository productRepository;
+  private final ProductService productService;
 
   @GetMapping
   public List<Products> getAllProducts() {
-    return productRepository.findAll();
+    return productService.getAllProducts();
   }
 
   @PostMapping
-  public Products createProduct(@RequestBody Products product) {
-    return productRepository.save(product);
+  public Products createProduct(@RequestBody _ProductDTO productDTO) {
+    return productService.createProduct(productDTO);
   }
 }
