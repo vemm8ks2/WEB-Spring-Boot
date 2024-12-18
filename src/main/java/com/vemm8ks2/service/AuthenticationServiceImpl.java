@@ -1,5 +1,6 @@
 package com.vemm8ks2.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     _user.setGender(user.getGender());
     _user.setBirthDate(user.getBirthDate());
     _user.setRole(UserRole.USER);
+    _user.setCreatedAt(LocalDateTime.now());
 
     cartService.createCart(_user);
     return userRepository.save(_user);

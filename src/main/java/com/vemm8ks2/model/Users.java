@@ -1,6 +1,7 @@
 package com.vemm8ks2.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,30 +43,8 @@ public class Users implements UserDetails {
   private UserGender gender;
 
   private LocalDate birthDate;
-
-  public Users buildUser(Users user) {
-
-    Users _user = new Users();
-
-    _user.setUsername(user.getUsername());
-    _user.setPassword(user.getPassword());
-    _user.setGender(user.getGender());
-    _user.setBirthDate(user.getBirthDate());
-    _user.setRole(UserRole.USER);
-
-    return _user;
-  }
-
-  public Users buildAdmin(Users admin) {
-
-    Users _admin = new Users();
-
-    _admin.setUsername(admin.getUsername());
-    _admin.setPassword(admin.getPassword());
-    _admin.setRole(UserRole.ADMIN);
-
-    return _admin;
-  }
+  
+  private LocalDateTime createdAt;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

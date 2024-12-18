@@ -1,0 +1,151 @@
+package com.vemm8ks2.controller;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.vemm8ks2.dto.RequsetBetweenDate;
+import com.vemm8ks2.dto.SuccessResponse;
+import com.vemm8ks2.model.Orders;
+import com.vemm8ks2.repository.OrderRepository;
+import com.vemm8ks2.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("/api/admin/dashboard")
+@RequiredArgsConstructor
+@Slf4j
+public class AdminDashboardContrller {
+
+  private final OrderRepository orderRepository;
+  private final UserRepository userRepository;
+
+  @GetMapping("/total-price-of-this-month")
+  public ResponseEntity<SuccessResponse<Double>> getTotalPriceOfThisMonth() {
+
+    LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+    LocalDate today = LocalDate.now();
+
+    Double totalPrice = orderRepository.findTotalPriceForDate(startOfMonth.atTime(0, 0),
+        today.atTime(LocalTime.now()));
+
+    String msg = startOfMonth + " 부터 " + today + " 까지 총 구매금액입니다.";
+    SuccessResponse<Double> response = new SuccessResponse<>(msg, totalPrice);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  // 지난 달 첫날부터 오늘 기준으로 한 달 전까지 총 합계를 구합니다.
+  @GetMapping("/total-price-of-last-month")
+  public ResponseEntity<SuccessResponse<Double>> getTotalPriceOfLastMonth() {
+
+    LocalDate today = LocalDate.now();
+    LocalDate lastMonth = today.minusMonths(1);
+    LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
+
+    Double totalPrice = orderRepository.findTotalPriceForDate(firstDayOfLastMonth.atTime(0, 0),
+        lastMonth.atTime(LocalTime.now()));
+
+    String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 구매금액입니다.";
+    SuccessResponse<Double> response = new SuccessResponse<>(msg, totalPrice);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("/signup-users-of-this-month")
+  public ResponseEntity<SuccessResponse<Number>> getSignupUsersOfThisMonth() {
+
+    LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+    LocalDate today = LocalDate.now();
+
+    Number users = userRepository.getSignupUsersForDate(startOfMonth.atTime(0, 0),
+        today.atTime(LocalTime.now()));
+
+    String msg = startOfMonth + " 부터 " + today + " 까지 총 회원가입자 수 입니다.";
+    SuccessResponse<Number> response = new SuccessResponse<>(msg, users);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  // 지난 달 첫날부터 오늘 기준으로 한 달 전까지 총 회원가입 수를 구합니다.
+  @GetMapping("/signup-users-of-last-month")
+  public ResponseEntity<SuccessResponse<Number>> getSignupUsersOfLastMonth() {
+
+    LocalDate today = LocalDate.now();
+    LocalDate lastMonth = today.minusMonths(1);
+    LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
+
+    Number users = userRepository.getSignupUsersForDate(firstDayOfLastMonth.atTime(0, 0),
+        lastMonth.atTime(LocalTime.now()));
+
+    String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 회원가입자 수 입니다.";
+    SuccessResponse<Number> response = new SuccessResponse<>(msg, users);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("/orders-number-of-this-month")
+  public ResponseEntity<SuccessResponse<Number>> getOrdersOfThisMonth() {
+
+    LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+    LocalDate today = LocalDate.now();
+
+    Number orders = orderRepository.countByDeliveredAtBetween(startOfMonth.atTime(0, 0),
+        today.atTime(LocalTime.now()));
+
+    String msg = startOfMonth + " 부터 " + today + " 까지 총 주문 수 입니다.";
+    SuccessResponse<Number> response = new SuccessResponse<>(msg, orders);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  // 지난 달 첫날부터 오늘 기준으로 한 달 전까지 총 회원가입 수를 구합니다.
+  @GetMapping("/orders-number-of-last-month")
+  public ResponseEntity<SuccessResponse<Number>> getOrdersOfLastMonth() {
+
+    LocalDate today = LocalDate.now();
+    LocalDate lastMonth = today.minusMonths(1);
+    LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
+
+    Number orders = orderRepository.countByDeliveredAtBetween(firstDayOfLastMonth.atTime(0, 0),
+        lastMonth.atTime(LocalTime.now()));
+
+    String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 주문 수 입니다.";
+    SuccessResponse<Number> response = new SuccessResponse<>(msg, orders);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("/order-amount-by-month")
+  public ResponseEntity<SuccessResponse<Object[]>> getMonthlyOrderAmoun(
+      @RequestBody RequsetBetweenDate date) {
+
+    LocalDateTime startDate = date.getStartDate();
+    LocalDateTime endDate = date.getEndDate();
+
+    Object[] orderAmount = orderRepository.getMonthlyOrderAmount(startDate, endDate);
+
+    String msg = startDate.toLocalDate() + " 부터 " + endDate.toLocalDate() + " 까지 월별 총 주문 합계 입니다.";
+    SuccessResponse<Object[]> response = new SuccessResponse<>(msg, orderAmount);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("/top5-recent-orders")
+  public ResponseEntity<SuccessResponse<List<Orders>>> getTop5RecentOrders() {
+
+    List<Orders> orders = orderRepository.findTop5ByOrderByDeliveredAtDesc();
+
+    SuccessResponse<List<Orders>> response = new SuccessResponse<>("최근 주문 목록 5개입니다.", orders);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+}

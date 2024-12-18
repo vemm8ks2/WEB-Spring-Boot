@@ -1,5 +1,6 @@
 package com.vemm8ks2.service;
 
+import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,14 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
 
   @Override
-  public Users createUser(Users user) {
-    return userRepository.save((new Users()).buildUser(user));
-  }
-
-  @Override
-  public Users createAdmin(Users admin) {
-    return userRepository.save((new Users()).buildAdmin(admin));
-  }
-
-  @Override
   public Users getUserById(Long userId) {
     return userRepository.findById(userId)
         .orElseThrow(() -> new NotFoundException("유저가 존재하지 않습니다."));
+  }
+
+  @Override
+  public List<Users> getAllUser() {
+    return userRepository.findAll();
   }
 
   @Override
