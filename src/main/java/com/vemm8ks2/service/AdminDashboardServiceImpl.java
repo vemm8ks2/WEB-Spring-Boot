@@ -16,7 +16,7 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
   private final UserRepository userRepository;
 
   @Override
-  public Double getTotalPriceBetweenDate(LocalDateTime startDate, LocalDateTime endDate) {
+  public Double getTotalSalesBetweenDate(LocalDateTime startDate, LocalDateTime endDate) {
     return (orderRepository.findTotalPriceForDate(startDate, endDate));
   }
 

@@ -25,13 +25,13 @@ public class AdminDashboardContrller {
 
   private final AdminDashboardService adminDashboardService;
 
-  @GetMapping("/total-price-of-this-month")
-  public ResponseEntity<SuccessResponse<Double>> getTotalPriceOfThisMonth() {
+  @GetMapping("/total-sales-of-this-month")
+  public ResponseEntity<SuccessResponse<Double>> getTotalSalesOfThisMonth() {
 
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
 
-    Double totalPrice = adminDashboardService.getTotalPriceBetweenDate(startOfMonth.atTime(0, 0),
+    Double totalPrice = adminDashboardService.getTotalSalesBetweenDate(startOfMonth.atTime(0, 0),
         today.atTime(LocalTime.now()));
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 구매금액입니다.";
@@ -41,14 +41,14 @@ public class AdminDashboardContrller {
   }
 
   // 지난 달 첫날부터 오늘 기준으로 한 달 전까지 총 합계를 구합니다.
-  @GetMapping("/total-price-of-last-month")
-  public ResponseEntity<SuccessResponse<Double>> getTotalPriceOfLastMonth() {
+  @GetMapping("/total-sales-of-last-month")
+  public ResponseEntity<SuccessResponse<Double>> getTotalSalesOfLastMonth() {
 
     LocalDate today = LocalDate.now();
     LocalDate lastMonth = today.minusMonths(1);
     LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
 
-    Double totalPrice = adminDashboardService.getTotalPriceBetweenDate(
+    Double totalPrice = adminDashboardService.getTotalSalesBetweenDate(
         firstDayOfLastMonth.atTime(0, 0), lastMonth.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 구매금액입니다.";

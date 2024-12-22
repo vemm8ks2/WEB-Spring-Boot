@@ -6,7 +6,7 @@ import com.vemm8ks2.model.Orders;
 
 public interface AdminDashboardService {
 
-  public Double getTotalPriceBetweenDate(LocalDateTime startDate, LocalDateTime endDate);
+  public Double getTotalSalesBetweenDate(LocalDateTime startDate, LocalDateTime endDate);
 
   public Number getSignupUsersBetweenDate(LocalDateTime startDate, LocalDateTime endDate);
 
