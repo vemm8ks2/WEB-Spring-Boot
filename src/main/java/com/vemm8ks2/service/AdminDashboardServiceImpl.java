@@ -40,4 +40,9 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
     return orderRepository.findTop5ByOrderByDeliveredAtDesc();
   }
 
+  @Override
+  public List<Orders> getOrderListBetweenDate(LocalDateTime startDate, LocalDateTime endDate) {
+    return orderRepository.findByDeliveredAtBetween(startDate, endDate);
+  }
+
 }

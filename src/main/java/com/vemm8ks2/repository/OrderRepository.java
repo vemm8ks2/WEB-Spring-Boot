@@ -16,8 +16,10 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
       @Param("endOfDate") LocalDateTime endOfDate);
 
   public Number countByDeliveredAtBetween(LocalDateTime startOfDate, LocalDateTime endOfDate);
-  
+
   public List<Orders> findTop5ByOrderByDeliveredAtDesc();
+
+  public List<Orders> findByDeliveredAtBetween(LocalDateTime startOfDate, LocalDateTime endOfDate);
 
   @Query("SELECT EXTRACT(YEAR FROM o.deliveredAt) AS year, EXTRACT(MONTH FROM o.deliveredAt) AS month, SUM(o.totalPrice) "
       + "FROM Orders o " + "WHERE o.deliveredAt BETWEEN :startOfDate AND :endOfDate "

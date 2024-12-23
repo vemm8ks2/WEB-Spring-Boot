@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.vemm8ks2.dto.SuccessResponse;
 import com.vemm8ks2.dto.request._BetweenDateDTO;
+import com.vemm8ks2.model.OrderItems;
 import com.vemm8ks2.model.Orders;
 import com.vemm8ks2.service.AdminDashboardService;
 import lombok.RequiredArgsConstructor;
@@ -135,6 +136,70 @@ public class AdminDashboardContrller {
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
+
+  @GetMapping("/order-amount-for-last-year")
+  public ResponseEntity<SuccessResponse<Object[]>> getOrderAmountForLastYear() {
+
+    LocalDate today = LocalDate.now();
+    LocalDate lastYear = today.minusYears(1);
+    LocalDate firstDayOfLastYear = lastYear.withDayOfMonth(1);
+
+    Object[] orderAmount = adminDashboardService.getMonthlyOrderAmount(
+        firstDayOfLastYear.atTime(0, 0), today.atTime(LocalTime.now()));
+
+    String msg = firstDayOfLastYear + " 부터 " + today + " 까지 월별 총 주문 합계 입니다.";
+    SuccessResponse<Object[]> response = new SuccessResponse<>(msg, orderAmount);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("/selling-quantity-for-this-month")
+  public ResponseEntity<SuccessResponse<Number>> getSellingQuantityForThisMonth() {
+
+    LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
+    LocalDate today = LocalDate.now();
+
+    List<Orders> orderList = adminDashboardService
+        .getOrderListBetweenDate(startOfMonth.atTime(0, 0), today.atTime(LocalTime.now()));
+
+    Integer totalQuantity = 0;
+
+    for (Orders order : orderList) {
+      for (OrderItems item : order.getOrderItems()) {
+        totalQuantity += item.getQuantity();
+      }
+    }
+
+    String msg = startOfMonth + " 부터 " + today + " 까지 총 판매 개수 입니다.";
+    SuccessResponse<Number> response = new SuccessResponse<>(msg, totalQuantity);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("/selling-quantity-for-last-month")
+  public ResponseEntity<SuccessResponse<Number>> getSellingQuantityForLastMonth() {
+
+    LocalDate today = LocalDate.now();
+    LocalDate lastMonth = today.minusMonths(1);
+    LocalDate firstDayOfLastMonth = lastMonth.withDayOfMonth(1);
+
+    List<Orders> orderList = adminDashboardService.getOrderListBetweenDate(
+        firstDayOfLastMonth.atTime(0, 0), lastMonth.atTime(LocalTime.now()));
+
+    Integer totalQuantity = 0;
+
+    for (Orders order : orderList) {
+      for (OrderItems item : order.getOrderItems()) {
+        totalQuantity += item.getQuantity();
+      }
+    }
+
+    String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 판매 개수 입니다.";
+    SuccessResponse<Number> response = new SuccessResponse<>(msg, totalQuantity);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
 
   @GetMapping("/top5-recent-orders")
   public ResponseEntity<SuccessResponse<List<Orders>>> getTop5RecentOrders() {

@@ -15,4 +15,6 @@ public interface AdminDashboardService {
   public Object[] getMonthlyOrderAmount(LocalDateTime startDate, LocalDateTime endDate);
 
   public List<Orders> getTop5RecentOrders();
+
+  public List<Orders> getOrderListBetweenDate(LocalDateTime startDate, LocalDateTime endDate);
 }
