@@ -8,8 +8,10 @@ import com.vemm8ks2.model.Products;
 public interface ProductService {
 
   public Products createProduct(_ProductDTO productDTO);
-  
+
   public List<Products> getAllProducts();
+
+  public Page<Products> getAllProducts(int page, int size);
 
   public Products getProductById(Long productId);
 

@@ -23,6 +23,7 @@ public class AdminUserController {
   public ResponseEntity<SuccessResponse<Page<Users>>> getAllUser(
       @RequestParam(defaultValue = "0", name = "page") int page,
       @RequestParam(defaultValue = "10", name = "size") int size) {
+
     Page<Users> users = userService.getAllUser(page, size);
 
     String msg = "page: " + page + " | size : " + size + " | 유저 데이터를 가져왔습니다.";

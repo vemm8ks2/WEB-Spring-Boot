@@ -10,8 +10,8 @@ public interface UserService {
   public Users getUserById(Long userId);
   
   public List<Users> getAllUser();
-  
-  public Page<Users>  getAllUser(int page, int size);
+
+  public Page<Users> getAllUser(int page, int size);
   
   public Users getUserByUsername(String username);
   
