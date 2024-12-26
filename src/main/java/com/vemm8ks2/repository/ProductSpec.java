@@ -13,10 +13,10 @@ public class ProductSpec {
         "%" + title + "%");
   }
 
-  public static Specification<Products> hasCategory(Long categoryId) {
+  public static Specification<Products> hasCategory(String categoryId) {
     return (root, query, criteriaBuilder) -> {
       Join<Products, Category> joinedRoot = root.join("category", JoinType.INNER);
-      return criteriaBuilder.equal(joinedRoot.get("category_id"), categoryId);
+      return criteriaBuilder.like(joinedRoot.get("id"), categoryId + "%");
     };
   }
 }

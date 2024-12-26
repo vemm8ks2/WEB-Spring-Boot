@@ -21,10 +21,13 @@ public class ProductController {
 
   @GetMapping
   public ResponseEntity<SuccessResponse<Page<Products>>> getProducts(
+      @RequestParam(required = false, name = "category_id") String categoryId,
+      @RequestParam(required = false, name = "keyword") String keyword,
       @RequestParam(defaultValue = "0", name = "page") int page,
       @RequestParam(defaultValue = "10", name = "size") int size) {
 
-    Page<Products> products = productService.getAllProducts(page, size);
+    Page<Products> products =
+        productService.getProductsByCondition(categoryId, keyword, page, size);
 
     String msg = "page: " + page + " | size : " + size + " | 상품 데이터를 가져왔습니다.";
     SuccessResponse<Page<Products>> response = new SuccessResponse<Page<Products>>(msg, products);

@@ -15,6 +15,6 @@ public interface ProductService {
 
   public Products getProductById(Long productId);
 
-  public Page<Products> getProductsByCondition(Long categoryId, String keyword, Integer pageNumber,
+  public Page<Products> getProductsByCondition(String categoryId, String keyword, Integer pageNumber,
       Integer pageSize);
 }

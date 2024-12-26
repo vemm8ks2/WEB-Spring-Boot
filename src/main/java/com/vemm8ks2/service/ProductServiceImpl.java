@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Page<Products> getProductsByCondition(Long categoryId, String keyword, Integer pageNumber,
+  public Page<Products> getProductsByCondition(String categoryId, String keyword, Integer pageNumber,
       Integer pageSize) {
 
     Specification<Products> spec = Specification.where(null);
