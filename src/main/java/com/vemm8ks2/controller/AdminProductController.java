@@ -26,7 +26,7 @@ public class AdminProductController {
   public ResponseEntity<SuccessResponse<Page<Products>>> getAllProducts(
       @RequestParam(defaultValue = "0", name = "page") int page,
       @RequestParam(defaultValue = "10", name = "size") int size) {
-    
+
     Page<Products> products = productService.getAllProducts(page, size);
 
     String msg = "page: " + page + " | size : " + size + " | 상품 데이터를 가져왔습니다.";

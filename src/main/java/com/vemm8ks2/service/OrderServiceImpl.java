@@ -1,6 +1,10 @@
 package com.vemm8ks2.service;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.vemm8ks2.exception.NotFoundException;
 import com.vemm8ks2.model.Orders;
@@ -29,6 +33,12 @@ public class OrderServiceImpl implements OrderService {
   @Override
   public List<Orders> getAllOrders() {
     return orderRepository.findAll();
+  }
+
+  @Override
+  public Page<Orders> getAllOrders(int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("deliveredAt")));
+    return orderRepository.findAll(pageable);
   }
 
   @Override
