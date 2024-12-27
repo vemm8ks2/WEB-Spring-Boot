@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.vemm8ks2.dto.SuccessResponse;
+import com.vemm8ks2.dto.response.GeneralResponse;
 import com.vemm8ks2.model.Cart;
 import com.vemm8ks2.model.CartItems;
 import com.vemm8ks2.model.Orders;
@@ -35,7 +35,7 @@ public class OrderController {
 
   @PostMapping
   @Transactional
-  public ResponseEntity<SuccessResponse<?>> saveOrder(@RequestHeader("Authorization") String jwt,
+  public ResponseEntity<GeneralResponse<?>> saveOrder(@RequestHeader("Authorization") String jwt,
       @RequestBody Orders order) {
 
     String username = jwtService.extractUsername(jwt.substring(7));
@@ -49,13 +49,13 @@ public class OrderController {
 
     orderItemService.createAllOrderItemByCartItemAndOrder(cartItems, _order);
 
-    SuccessResponse<?> response = new SuccessResponse<>("주문이 완료되었습니다.");
+    GeneralResponse<?> response = new GeneralResponse<>("주문이 완료되었습니다.");
 
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @GetMapping("/history")
-  public ResponseEntity<SuccessResponse<List<Orders>>> getOrderHistory(
+  public ResponseEntity<GeneralResponse<List<Orders>>> getOrderHistory(
       @RequestHeader("Authorization") String jwt) {
 
     String username = jwtService.extractUsername(jwt.substring(7));
@@ -63,7 +63,7 @@ public class OrderController {
     Users user = userService.getUserByUsername(username);
     List<Orders> orders = orderService.getOrdersByUser(user.getId());
 
-    SuccessResponse<List<Orders>> response = new SuccessResponse<>("주문 내역을 성공적으로 불러왔습니다.", orders);
+    GeneralResponse<List<Orders>> response = new GeneralResponse<>("주문 내역을 성공적으로 불러왔습니다.", orders);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }

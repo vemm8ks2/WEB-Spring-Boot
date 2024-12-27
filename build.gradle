@@ -33,6 +33,7 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6' // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
 	
 	compileOnly 'org.projectlombok:lombok:1.18.36' // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'  // Lombok 처리기
 }
 
 tasks.named('test') {

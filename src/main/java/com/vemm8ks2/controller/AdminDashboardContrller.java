@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.vemm8ks2.dto.SuccessResponse;
 import com.vemm8ks2.dto.request._BetweenDateDTO;
+import com.vemm8ks2.dto.response.GeneralResponse;
 import com.vemm8ks2.model.OrderItems;
 import com.vemm8ks2.model.Orders;
 import com.vemm8ks2.service.AdminDashboardService;
@@ -27,7 +27,7 @@ public class AdminDashboardContrller {
   private final AdminDashboardService adminDashboardService;
 
   @GetMapping("/total-sales-of-this-month")
-  public ResponseEntity<SuccessResponse<Double>> getTotalSalesOfThisMonth() {
+  public ResponseEntity<GeneralResponse<Double>> getTotalSalesOfThisMonth() {
 
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
@@ -36,14 +36,14 @@ public class AdminDashboardContrller {
         today.atTime(LocalTime.now()));
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 구매금액입니다.";
-    SuccessResponse<Double> response = new SuccessResponse<>(msg, totalPrice);
+    GeneralResponse<Double> response = new GeneralResponse<>(msg, totalPrice);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   // 지난 달 첫날부터 오늘 기준으로 한 달 전까지 총 합계를 구합니다.
   @GetMapping("/total-sales-of-last-month")
-  public ResponseEntity<SuccessResponse<Double>> getTotalSalesOfLastMonth() {
+  public ResponseEntity<GeneralResponse<Double>> getTotalSalesOfLastMonth() {
 
     LocalDate today = LocalDate.now();
     LocalDate lastMonth = today.minusMonths(1);
@@ -53,13 +53,13 @@ public class AdminDashboardContrller {
         firstDayOfLastMonth.atTime(0, 0), lastMonth.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 구매금액입니다.";
-    SuccessResponse<Double> response = new SuccessResponse<>(msg, totalPrice);
+    GeneralResponse<Double> response = new GeneralResponse<>(msg, totalPrice);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/signup-users-of-this-month")
-  public ResponseEntity<SuccessResponse<Number>> getSignupUsersOfThisMonth() {
+  public ResponseEntity<GeneralResponse<Number>> getSignupUsersOfThisMonth() {
 
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
@@ -68,14 +68,14 @@ public class AdminDashboardContrller {
         today.atTime(LocalTime.now()));
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 회원가입자 수 입니다.";
-    SuccessResponse<Number> response = new SuccessResponse<>(msg, users);
+    GeneralResponse<Number> response = new GeneralResponse<>(msg, users);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   // 지난 달 첫날부터 오늘 기준으로 한 달 전까지 총 회원가입 수를 구합니다.
   @GetMapping("/signup-users-of-last-month")
-  public ResponseEntity<SuccessResponse<Number>> getSignupUsersOfLastMonth() {
+  public ResponseEntity<GeneralResponse<Number>> getSignupUsersOfLastMonth() {
 
     LocalDate today = LocalDate.now();
     LocalDate lastMonth = today.minusMonths(1);
@@ -85,13 +85,13 @@ public class AdminDashboardContrller {
         lastMonth.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 회원가입자 수 입니다.";
-    SuccessResponse<Number> response = new SuccessResponse<>(msg, users);
+    GeneralResponse<Number> response = new GeneralResponse<>(msg, users);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/orders-number-of-this-month")
-  public ResponseEntity<SuccessResponse<Number>> getOrdersOfThisMonth() {
+  public ResponseEntity<GeneralResponse<Number>> getOrdersOfThisMonth() {
 
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
@@ -100,14 +100,14 @@ public class AdminDashboardContrller {
         today.atTime(LocalTime.now()));
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 주문 수 입니다.";
-    SuccessResponse<Number> response = new SuccessResponse<>(msg, orders);
+    GeneralResponse<Number> response = new GeneralResponse<>(msg, orders);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   // 지난 달 첫날부터 오늘 기준으로 한 달 전까지 총 회원가입 수를 구합니다.
   @GetMapping("/orders-number-of-last-month")
-  public ResponseEntity<SuccessResponse<Number>> getOrdersOfLastMonth() {
+  public ResponseEntity<GeneralResponse<Number>> getOrdersOfLastMonth() {
 
     LocalDate today = LocalDate.now();
     LocalDate lastMonth = today.minusMonths(1);
@@ -117,13 +117,13 @@ public class AdminDashboardContrller {
         lastMonth.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 주문 수 입니다.";
-    SuccessResponse<Number> response = new SuccessResponse<>(msg, orders);
+    GeneralResponse<Number> response = new GeneralResponse<>(msg, orders);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/order-amount-by-month")
-  public ResponseEntity<SuccessResponse<Object[]>> getMonthlyOrderAmount(
+  public ResponseEntity<GeneralResponse<Object[]>> getMonthlyOrderAmount(
       @RequestBody _BetweenDateDTO date) {
 
     LocalDateTime startDate = date.getStartDate();
@@ -132,13 +132,13 @@ public class AdminDashboardContrller {
     Object[] orderAmount = adminDashboardService.getMonthlyOrderAmount(startDate, endDate);
 
     String msg = startDate.toLocalDate() + " 부터 " + endDate.toLocalDate() + " 까지 월별 총 주문 합계 입니다.";
-    SuccessResponse<Object[]> response = new SuccessResponse<>(msg, orderAmount);
+    GeneralResponse<Object[]> response = new GeneralResponse<>(msg, orderAmount);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/order-amount-for-last-year")
-  public ResponseEntity<SuccessResponse<Object[]>> getOrderAmountForLastYear() {
+  public ResponseEntity<GeneralResponse<Object[]>> getOrderAmountForLastYear() {
 
     LocalDate today = LocalDate.now();
     LocalDate lastYear = today.minusYears(1);
@@ -148,13 +148,13 @@ public class AdminDashboardContrller {
         firstDayOfLastYear.atTime(0, 0), today.atTime(LocalTime.now()));
 
     String msg = firstDayOfLastYear + " 부터 " + today + " 까지 월별 총 주문 합계 입니다.";
-    SuccessResponse<Object[]> response = new SuccessResponse<>(msg, orderAmount);
+    GeneralResponse<Object[]> response = new GeneralResponse<>(msg, orderAmount);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/selling-quantity-for-this-month")
-  public ResponseEntity<SuccessResponse<Number>> getSellingQuantityForThisMonth() {
+  public ResponseEntity<GeneralResponse<Number>> getSellingQuantityForThisMonth() {
 
     LocalDate startOfMonth = LocalDate.now().withDayOfMonth(1);
     LocalDate today = LocalDate.now();
@@ -171,13 +171,13 @@ public class AdminDashboardContrller {
     }
 
     String msg = startOfMonth + " 부터 " + today + " 까지 총 판매 개수 입니다.";
-    SuccessResponse<Number> response = new SuccessResponse<>(msg, totalQuantity);
+    GeneralResponse<Number> response = new GeneralResponse<>(msg, totalQuantity);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
   @GetMapping("/selling-quantity-for-last-month")
-  public ResponseEntity<SuccessResponse<Number>> getSellingQuantityForLastMonth() {
+  public ResponseEntity<GeneralResponse<Number>> getSellingQuantityForLastMonth() {
 
     LocalDate today = LocalDate.now();
     LocalDate lastMonth = today.minusMonths(1);
@@ -195,18 +195,18 @@ public class AdminDashboardContrller {
     }
 
     String msg = firstDayOfLastMonth + " 부터 " + lastMonth + " 까지 총 판매 개수 입니다.";
-    SuccessResponse<Number> response = new SuccessResponse<>(msg, totalQuantity);
+    GeneralResponse<Number> response = new GeneralResponse<>(msg, totalQuantity);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
 
   @GetMapping("/top5-recent-orders")
-  public ResponseEntity<SuccessResponse<List<Orders>>> getTop5RecentOrders() {
+  public ResponseEntity<GeneralResponse<List<Orders>>> getTop5RecentOrders() {
 
     List<Orders> orders = adminDashboardService.getTop5RecentOrders();
 
-    SuccessResponse<List<Orders>> response = new SuccessResponse<>("최근 주문 목록 5개입니다.", orders);
+    GeneralResponse<List<Orders>> response = new GeneralResponse<>("최근 주문 목록 5개입니다.", orders);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }

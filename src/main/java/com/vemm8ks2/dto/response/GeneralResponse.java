@@ -1,4 +1,4 @@
-package com.vemm8ks2.dto;
+package com.vemm8ks2.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SuccessResponse<T> {
+public class GeneralResponse<T> {
 
   private String message;
   private T data;
 
-  public SuccessResponse(String message) {
+  public GeneralResponse(String message) {
     this.message = message;
     this.data = null;
   }

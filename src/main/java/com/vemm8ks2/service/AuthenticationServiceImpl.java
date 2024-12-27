@@ -24,6 +24,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
 
+  @Override
   @Transactional
   public Users signup(Users user) {
 
@@ -40,6 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     return userRepository.save(_user);
   }
 
+  @Override
   public JwtAuthSuccess signin(Users user) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -59,6 +61,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     return response;
   }
 
+  @Override
   public JwtAuthSuccess refreshToken(RefreshTokenRequest refreshTokenRequest) {
     String username = jwtService.extractUsername(refreshTokenRequest.getToken());
     Users user = userRepository.findByUsername(username).orElseThrow();
@@ -77,4 +80,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     return null;
   }
+  
 }

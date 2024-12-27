@@ -11,4 +11,5 @@ public interface AuthenticationService {
   public JwtAuthSuccess signin(Users user);
 
   public JwtAuthSuccess refreshToken(RefreshTokenRequest refreshTokenRequest);
+
 }
