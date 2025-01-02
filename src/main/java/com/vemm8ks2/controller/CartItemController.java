@@ -72,7 +72,7 @@ public class CartItemController {
     Cart cart = cartService.getCartByUser(user.getId());
 
     if (cart.getUser().getUsername().equals(username)) {
-      cartItemSerive.removeAllCartItem(cart.getCartItems());
+      cartItemSerive.removeAllCartItem(cart);
 
       cart.setCartItems(new ArrayList<>());
       return ResponseEntity.ok(cart);

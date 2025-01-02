@@ -14,7 +14,7 @@ public interface CartItemSerive {
   
   public Cart removeCartItem(Long cartId, CartItems cartItem);
   
-  public boolean removeAllCartItem(List<CartItems> cartItems);
+  public boolean removeAllCartItem(Cart cart);
 
   public List<CartItems> getCartItemsByCartId(Long cartId);
   

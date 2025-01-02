@@ -1,5 +1,6 @@
 package com.vemm8ks2.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import com.vemm8ks2.model.Cart;
 import com.vemm8ks2.model.CartItems;
 import com.vemm8ks2.model.Orders;
 import com.vemm8ks2.model.Users;
+import com.vemm8ks2.service.CartItemSerive;
 import com.vemm8ks2.service.CartService;
 import com.vemm8ks2.service.JwtService;
 import com.vemm8ks2.service.OrderItemService;
@@ -29,6 +31,7 @@ public class OrderController {
 
   private final JwtService jwtService;
   private final CartService cartService;
+  private final CartItemSerive cartItemService;
   private final UserService userService;
   private final OrderService orderService;
   private final OrderItemService orderItemService;
@@ -42,12 +45,12 @@ public class OrderController {
 
     Users user = userService.getUserByUsername(username);
     Cart cart = cartService.getCartByUser(user.getId());
-
-    List<CartItems> cartItems = cart.getCartItems();
+    List<CartItems> cartItems = cartItemService.getCartItemsByCartId(cart.getId());
 
     Orders _order = orderService.createOrder(order, user);
 
     orderItemService.createAllOrderItemByCartItemAndOrder(cartItems, _order);
+    cartItemService.removeAllCartItem(cart);
 
     GeneralResponse<?> response = new GeneralResponse<>("주문이 완료되었습니다.");
 
