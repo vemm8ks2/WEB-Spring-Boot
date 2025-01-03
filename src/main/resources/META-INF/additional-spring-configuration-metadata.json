@@ -1,5 +1,17 @@
-{"properties": [{
-  "name": "jwt.secret",
-  "type": "java.lang.String",
-  "description": "JWT 비밀키입니다."
-}]}
+{"properties": [
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "JWT 비밀키입니다."
+  },
+  {
+    "name": "chart.executable",
+    "type": "java.lang.String",
+    "description": "파이썬 인터프리터의 위치입니다."
+  },
+  {
+    "name": "chart.script",
+    "type": "java.lang.String",
+    "description": "차트화 파이썬 앱의 위치입니다."
+  }
+]}
