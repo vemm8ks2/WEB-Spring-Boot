@@ -1,5 +1,6 @@
 package com.vemm8ks2.controller;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class AdminOrderController {
   private final OrderService orderService;
 
   @GetMapping
-  public ResponseEntity<GeneralResponse<Page<Orders>>> getAllOrders(
+  public ResponseEntity<GeneralResponse<Page<Orders>>> getOrdersByPageAndSize(
       @RequestParam(defaultValue = "0", name = "page") int page,
       @RequestParam(defaultValue = "10", name = "size") int size) {
 
@@ -28,6 +29,17 @@ public class AdminOrderController {
 
     String msg = "page: " + page + " | size : " + size + " | 상품 데이터를 가져왔습니다.";
     GeneralResponse<Page<Orders>> response = new GeneralResponse<Page<Orders>>(msg, orders);
+
+    return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
+
+  @GetMapping("/all")
+  public ResponseEntity<GeneralResponse<List<Orders>>> getAllOrders() {
+
+    List<Orders> orderList = orderService.getAllOrders();
+
+    String msg = "모든 주문 목록입니다.";
+    GeneralResponse<List<Orders>> response = new GeneralResponse<>(msg, orderList);
 
     return ResponseEntity.status(HttpStatus.OK).body(response);
   }
