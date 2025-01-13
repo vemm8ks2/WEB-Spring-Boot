@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.vemm8ks2.dto.request._ProductDTO;
+import com.vemm8ks2.dto.request._ProductOptionDTO;
 import com.vemm8ks2.exception.NotFoundException;
 import com.vemm8ks2.model.Category;
 import com.vemm8ks2.model.ProductOptions;
@@ -40,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     product = productRepository.save(product);
 
-    for (ProductOptions option : product.getProductOptions()) {
+    for (_ProductOptionDTO option : productDTO.getProductOptions()) {
       ProductOptions _productOption = new ProductOptions();
 
       _productOption.setSize(option.getSize());
@@ -71,8 +72,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public Page<Products> getProductsByCondition(String categoryId, String keyword, Integer pageNumber,
-      Integer pageSize) {
+  public Page<Products> getProductsByCondition(String categoryId, String keyword,
+      Integer pageNumber, Integer pageSize) {
 
     Specification<Products> spec = Specification.where(null);
 
